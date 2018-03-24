@@ -41,6 +41,102 @@
     </div>
     <ul class="list">
     
+        <li class="item" data-name="PIXI">
+            <span class="title namespace ">
+                
+                <span class="namespaceTag">
+                    <span class="glyphicon glyphicon-folder-open"></span>
+                </span>
+                
+                <a href="PIXI.html">PIXI</a>
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="PIXI.lights">
+            <span class="title namespace ">
+                
+                <span class="namespaceTag">
+                    <span class="glyphicon glyphicon-folder-open"></span>
+                </span>
+                
+                <a href="PIXI.lights.html">PIXI.lights</a>
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li class="parent " data-name="PIXI.lights.diffuseGroup"><a href="PIXI.lights.html#.diffuseGroup">diffuseGroup</a></li>
+            
+                <li class="parent " data-name="PIXI.lights.lightGroup"><a href="PIXI.lights.html#.lightGroup">lightGroup</a></li>
+            
+                <li class="parent " data-name="PIXI.lights.normalGroup"><a href="PIXI.lights.html#.normalGroup">normalGroup</a></li>
+            
+                <li class="parent " data-name="PIXI.lights.plugins"><a href="PIXI.lights.html#.plugins">plugins</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li class="parent  " data-name="PIXI.lights.registerPlugin"><a href="PIXI.lights.html#.registerPlugin">registerPlugin</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="PIXI.Circle">
+            <span class="title  ">
+                
+                <a href="PIXI.Circle.html">PIXI.Circle</a>
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            <span class="subtitle">Typedefs</span>
+            
+                <li class="parent" data-name="PIXI.Circle~MeshData"><a href="PIXI.Circle.html#~MeshData">MeshData</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li class="parent  " data-name="PIXI.Circle#getMesh"><a href="PIXI.Circle.html#getMesh">getMesh</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="PIXI.lights.AmbientLight">
             <span class="title  ">
                 
@@ -339,6 +435,12 @@
         </header>
         <article>
             <pre id="source-code" class="prettyprint source linenums"><code>/**
+ * Contains mixins for the `PIXI.Circle` class.
+ * @class Circle
+ * @memberof PIXI
+ * @see http://pixijs.download/release/docs/PIXI.Circle.html
+ */
+/**
  * Creates vertices and indices arrays to describe this circle.
  * @method PIXI.Circle#getMesh
  * @param [totalSegments=40] {number} Total segments to build for the circle mesh.
@@ -346,7 +448,7 @@
  *  `((totalSegments + 2) * 2)` or more. If not passed it is created for you.
  * @param [indicesOutput] {Uint16Array} An array to output the indices into, in gl.TRIANGLE_FAN format. Length must
  *  be `(totalSegments + 3)` or more. If not passed it is created for you.
- * @return {Object} Object with verticies and indices arrays
+ * @return {PIXI.Circle~MeshData} Object with verticies and indices arrays
  */
 PIXI.Circle.prototype.getMesh = function getMesh(totalSegments = 40, vertices, indices) {
     vertices = vertices || new Float32Array((totalSegments + 1) * 2);
@@ -371,6 +473,12 @@ PIXI.Circle.prototype.getMesh = function getMesh(totalSegments = 40, vertices, i
 
     return { vertices, indices };
 };
+
+/**
+ * @typedef PIXI.Circle~MeshData
+ * @property {Float32Array} vertices - Vertices data
+ * @property {Uint16Array} indices - Indices data
+ */
 </code></pre>
         </article>
     </section>
@@ -384,7 +492,7 @@ PIXI.Circle.prototype.getMesh = function getMesh(totalSegments = 40, vertices, i
 
         <footer class="content-size">
             <div class="footer">
-                Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Mar 24 2018 13:58:57 GMT-0400 (EDT)
+                Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Mar 24 2018 15:14:31 GMT-0400 (EDT)
             </div>
         </footer>
     </div>

@@ -422,202 +422,497 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="renderers_LightRenderer.js.html">Source: renderers/LightRenderer.js</h1>
+        <h1 class="page-title" data-filename="PIXI.Circle.html">Class: Circle</h1>
         
 
 
+
+<section>
     
-    <section>
-        <header>
-            <div class="header content-size">
-                <h2>renderers/LightRenderer.js</h2>
-            </div>
-        </header>
-        <article>
-            <pre id="source-code" class="prettyprint source linenums"><code>import {plugins, normalGroup, diffuseGroup} from '../main';
+<header>
+    <div class="header content-size">
+        <h2><span class="ancestors"><a href="PIXI.html">PIXI</a>.</span>Circle
+        </h2>
+        
+    </div>
+</header>  
 
-/**
- * @class
- * @private
- * @memberof PIXI.lights
- * @extends PIXI.ObjectRenderer
- * @param renderer {PIXI.WebGLRenderer} The renderer this sprite batch works for.
- */
-export default class LightRenderer extends PIXI.ObjectRenderer {
-    constructor(renderer) {
-        super(renderer);
+<article class="content-size">
+    <div class="container-overview">
+    
+    
+    
+        
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="Circle">
+            <a class="share-icon" href="#Circle"><span class="glyphicon glyphicon-link"></span></a>
+            <span class="">
+                new PIXI.Circle
+            </span>
+            <span class="signature">()</span>
+            
+            
+            
+            
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="mixins_Circle.js.html#line1">Circle.js:1</a>
+        </div>
+        
+    </div>
 
-        // the total number of indices in our batch, there are 6 points per quad.
-        const numIndices = LightRenderer.MAX_LIGHTS * 6;
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Contains mixins for the <code>PIXI.Circle</code> class.</p>
+    </div>
+    
 
-        /**
-         * Holds the indices
-         *
-         * @member {Uint16Array}
-         */
-        this.indices = new Uint16Array(numIndices);
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a target="_blank" href="http://pixijs.download/release/docs/PIXI.Circle.html">http://pixijs.download/release/docs/PIXI.Circle.html</a></li>
+        </ul>
+    </dd>
+    
+    
+    
+</dl>
 
-        //TODO this could be a single buffer shared amongst all renderers as we reuse this set up in most renderers
-        for (let i = 0, j = 0; i &lt; numIndices; i += 6, j += 4) {
-            this.indices[i + 0] = j + 0;
-            this.indices[i + 1] = j + 1;
-            this.indices[i + 2] = j + 2;
-            this.indices[i + 3] = j + 0;
-            this.indices[i + 4] = j + 2;
-            this.indices[i + 5] = j + 3;
-        }
+    
+    
 
-        this.shaders = {};
+    
 
-        /**
-         * The current lights in the batch.
-         *
-         * @member {Light[]}
-         */
-        this.lights = [];
-    }
+    
+    
+    
+    
+    
+    
+    
+</dd>
 
-    onContextChange() {
-        this.gl = this.renderer.gl;
-        for (let key in plugins) {
-            this.shaders[key] = new (plugins[key])(this.gl);
-        }
-    }
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl class="list-methods">
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="getMesh">
+            <a class="share-icon" href="#getMesh"><span class="glyphicon glyphicon-link"></span></a>
+            <span class="">
+                getMesh
+            </span>
+            <span class="signature">(<span class="optional">totalSegments</span>, <span class="optional">verticesOutput</span>, <span class="optional">indicesOutput</span>)</span><span class="type-signature"><a href="PIXI.Circle.html#~MeshData">PIXI.Circle~MeshData</a></span>
+            
+            
+            
+            
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="mixins_Circle.js.html#line7">Circle.js:7</a>
+        </div>
+        
+    </div>
 
-    /**
-     * Renders the light object.
-     * @private
-     * @param light {Light} the light to render
-     */
-    render(mesh) {
-        let renderer = this.renderer;
-        let gl = renderer.gl;
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Creates vertices and indices arrays to describe this circle.</p>
+    </div>
+    
 
-        this.lights.push(mesh);
-        /**
-         * Prepares all the buffers to render this light.
-         */
-        let glData = mesh._glDatas[renderer.CONTEXT_UID];
+    
+    
+    
+    
+    
+        
 
-        if (!glData) {
-            renderer.bindVao(null);
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Default</th>
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>totalSegments</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
 
-            glData = {
-                shader: this.shaders[mesh.shaderName],
-                vertexBuffer: PIXI.glCore.GLBuffer.createVertexBuffer(gl, mesh.vertices, gl.STREAM_DRAW),
-                indexBuffer: PIXI.glCore.GLBuffer.createIndexBuffer(gl, mesh.indices, gl.STATIC_DRAW),
-                // build the vao object that will render..
-                vao: null,
-                dirty: mesh.dirty
-            };
 
-            // build the vao object that will render..
-            glData.vao = new PIXI.glCore.VertexArrayObject(gl)
-                .addIndex(glData.indexBuffer)
-                .addAttribute(glData.vertexBuffer, glData.shader.attributes.aVertexPosition, gl.FLOAT, false, 2 * 4, 0);
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                    40
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>Total segments to build for the circle mesh.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>verticesOutput</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Float32Array</span>
 
-            mesh._glDatas[renderer.CONTEXT_UID] = glData;
-        }
 
-        renderer.bindVao(glData.vao);
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>An array to output the vertices into. Length must be
+ <code>((totalSegments + 2) * 2)</code> or more. If not passed it is created for you.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>indicesOutput</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Uint16Array</span>
 
-        if (mesh.useViewportQuad) {
-            mesh.vertices[2] = mesh.vertices[4] = renderer.screen.width;
-            mesh.vertices[5] = mesh.vertices[7] = renderer.screen.height;
-        }
-        glData.vertexBuffer.upload(mesh.vertices);
 
-        if (glData.dirty !== mesh.dirty) {
-            glData.dirty = mesh.dirty;
-            glData.indexBuffer.upload(mesh.indices);
-        }
-    }
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>An array to output the indices into, in gl.TRIANGLE_FAN format. Length must
+ be <code>(totalSegments + 3)</code> or more. If not passed it is created for you.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
 
-    flush() {
-        let diffuseTexture = null,
-            normalTexture = null,
-            lastLayer = null,
-            lastShader = null,
-            renderer = this.renderer;
+    
+    
 
-        for (let i = 0; i &lt; this.lights.length; ++i) {
-            let light = this.lights[i],
-                layer = this.lights[i]._activeParentLayer;
+    
 
-            if (!layer) {
-                continue;
-            }
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
 
-            if (lastLayer !== layer) {
-                lastLayer = layer;
-                let stage = layer._activeStageParent;
 
-                if (layer.diffuseTexture &amp;&amp;
-                    layer.normalTexture) {
-                    diffuseTexture = layer.diffuseTexture;
-                    normalTexture = layer.normalTexture;
-                }
-                else {
-                    for (let j = 0; j &lt; stage._activeLayers.length; j++) {
-                        let texLayer = stage._activeLayers[j];
-                        if (texLayer.group === normalGroup) {
-                            normalTexture = texLayer.getRenderTexture();
-                        }
-                        if (texLayer.group === diffuseGroup) {
-                            diffuseTexture = texLayer.getRenderTexture();
-                        }
-                    }
-                }
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        <a href="PIXI.Circle.html#~MeshData">PIXI.Circle~MeshData</a>
+                        
+                    
+            </td>
+            <td class="description last">Object with verticies and indices arrays</td>
+        </tr>
+    
+    </tbody>
+</table>
 
-                renderer.bindTexture(diffuseTexture, 0, true);
-                renderer.bindTexture(normalTexture, 1, true);
-            }
+    
+    
+    
+</dd>
 
-            let glData = light._glDatas[renderer.CONTEXT_UID],
-                shader = glData.shader;
+        </dl>
+    
+    
+    
+        <h3 class="subsection-title">Type Definitions</h3>
+        
+        <dl class="list-definitions">
+                
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="~MeshData">
+            <a class="share-icon" href="#~MeshData"><span class="glyphicon glyphicon-link"></span></a>
+            <span class="">MeshData</span>
+            
+            
+            
+            
+            
+        </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
 
-            if (lastShader !== shader) {
-                lastShader = shader;
-                renderer.bindShader(shader);
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>vertices</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Float32Array</span>
 
-                shader.uniforms.uSampler = 0;
-                shader.uniforms.uNormalSampler = 1;
 
-                let uViewSize = shader.uniforms.uViewSize;
-                uViewSize[0] = renderer.screen.width;
-                uViewSize[1] = renderer.screen.height;
-                shader.uniforms.uViewSize = uViewSize;
-            }
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Vertices data</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>indices</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Uint16Array</span>
 
-            renderer.bindVao(glData.vao);
 
-            light.syncShader(shader);
-            renderer.state.setBlendMode(light.blendMode);
-            shader.uniforms.translationMatrix = light.worldTransform.toArray(true);
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Indices data</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
 
-            glData.vao.draw(light.drawMode, light.indices.length, 0);
-        }
+    
+    
+</dd>
 
-        this.lights.length = 0;
-    }
+            </dl>
+    
+    
+    
 
-    stop() {
-        this.flush();
-    }
-}
+    
+</article>
 
-/**
- * Maximum number of lights
- * @static
- * @member {number}
- */
-LightRenderer.MAX_LIGHTS = 500;
-
-PIXI.WebGLRenderer.registerPlugin('lights', LightRenderer);
-</code></pre>
-        </article>
-    </section>
-
+</section>  
 
 
 
@@ -627,7 +922,7 @@ PIXI.WebGLRenderer.registerPlugin('lights', LightRenderer);
 
         <footer class="content-size">
             <div class="footer">
-                Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Mar 24 2018 15:14:31 GMT-0400 (EDT)
+                Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Mar 24 2018 15:14:31 GMT-0400 (EDT)
             </div>
         </footer>
     </div>
