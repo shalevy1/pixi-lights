@@ -445,15 +445,67 @@
 
     <section>
         <article class="readme content-size"><h1>PixiJS Lights</h1><p><a target="_blank" href="https://travis-ci.org/pixijs/pixi-lights"><img src="https://travis-ci.org/pixijs/pixi-lights.svg?branch=master" alt="Build Status"></a></p>
-<p>A plugin that adds deferred lighting to Pixi.js</p>
-<p><strong>Note</strong>: This modules <em>requires</em> v4.7.1 (or higher) of <a target="_blank" href="https://github.com/pixijs/pixi.js">pixi.js</a>
-and v0.1.6 (or higher) of <a target="_blank" href="https://github.com/pixijs/pixi-display">pixi-layers</a>.</p>
+<p>A plugin that adds deferred lighting to PixiJS.</p>
+<p><strong>Note</strong>: This modules <em>requires</em> v4.5.0+ of <a target="_blank" href="https://github.com/pixijs/pixi.js">pixi.js</a> and v0.1.6 of <a target="_blank" href="https://github.com/pixijs/pixi-display">pixi-layers</a>.</p>
 <ul>
 <li><a target="_blank" href="http://pixijs.io/pixi-lights/demo/index.html">Demo</a></li>
 <li><a target="_blank" href="http://pixijs.io/pixi-lights/docs/index.html">Documentation</a></li>
 </ul>
-<h3>WARNING: Experimental</h3><p>@xerver: This module is experimental and unoptimized, I do not consider it &quot;production ready&quot; yet.
-@ivanpopelyshev: I approve it for production</p>
+<h2>Usage</h2><p><a target="_blank" href="http://pixijs.io/pixi-lights/demo/usage.html">Example</a></p>
+<p>You have to create three layers: one for sprites, one for their normals and one for lights. Sprites and normals are rendered to temporary RenderTexture, and lights have those two textures as an input.</p>
+<pre class="prettyprint source lang-js"><code>import 'pixi.js';
+import 'pixi-layers';
+import 'pixi-lights';
+
+// Get class references
+const {Application, Sprite, Container, lights, display} = PIXI;
+const {diffuseGroup, normalGroup, lightGroup} = lights;
+const {Layer, Stage} = display;
+
+// Create new application
+const app = new Application({
+    backgroundColor: 0x000000, // Black is required!
+    width: 800,
+    height: 600
+});
+document.body.appendChild(app.view);
+
+// Use the pixi-layers Stage instead of default Container
+app.stage = new Stage();
+
+// Add the background diffuse color
+const diffuse = Sprite.fromImage('images/BGTextureTest.jpg');
+diffuse.parentGroup = diffuseGroup;
+
+// Add the background normal map
+const normals = Sprite.fromImage('images/BGTextureNORM.jpg');
+normals.parentGroup = normalGroup;
+
+// Create the point light
+const light = new PIXI.lights.PointLight(0xffffff, 1);
+light.x = app.screen.width / 2;
+light.y = app.screen.height / 2;
+
+// Create a background container 
+const background = new Container();
+background.addChild(
+    normals,
+    diffuse,
+    light
+);
+
+app.stage.addChild(
+    // put all layers for deferred rendering of normals
+    new Layer(diffuseGroup),
+    new Layer(normalGroup),
+    new Layer(lightGroup),
+    // Add the lights and images
+    background
+);</code></pre><h2>Building</h2><p>You normally don't need to build this module, you can just download a release from the releases page.</p>
+<p>However, if you are developing on the project or want a bleeding edge build then you
+will need to have <a target="_blank" href="http://nodejs.org/">node</a> setup on your machine.</p>
+<p>Then you can install dependencies and build:</p>
+<pre class="prettyprint source lang-js"><code>npm i && npm run build</code></pre><p>That will output the built distributables to <code>./lib</code>.</p>
 <h2>Roadmap</h2><ol>
 <li>More lighting types, left are:<ul>
 <li>Spot lights</li>
@@ -463,61 +515,7 @@ and v0.1.6 (or higher) of <a target="_blank" href="https://github.com/pixijs/pix
 </li>
 <li>Add dynamic shadows</li>
 <li>Write tests!</li>
-</ol>
-<h2>Usage</h2><p><a target="_blank" href="http://pixijs.io/examples/#/layers/normals.js">Example</a></p>
-<p>You have to create three layers: one for sprites, one for their normals and one for lights. Sprites and normals are rendered to temporary RenderTexture, and lights have those two textures as an input.  </p>
-<pre class="prettyprint source lang-js"><code>var WIDTH = 800, HEIGHT = 600;
-
-var app = new PIXI.Application(WIDTH, HEIGHT);
-document.body.appendChild(app.view);
-
-var stage = app.stage = new PIXI.display.Stage();
-var light = new PIXI.lights.PointLight(0xffffff, 1);
-
-// put all layers for deferred rendering of normals
-stage.addChild(new PIXI.display.Layer(PIXI.lights.diffuseGroup));
-stage.addChild(new PIXI.display.Layer(PIXI.lights.normalGroup));
-stage.addChild(new PIXI.display.Layer(PIXI.lights.lightGroup));
-
-PIXI.loader.baseUrl = 'https://cdn.rawgit.com/pixijs/pixi-lights/b7fd7924fdf4e6a6b913ff29161402e7b36f0c0f/';
-
-PIXI.loader
-    .add('bg_diffuse', 'test/BGTextureTest.jpg')
-    .add('bg_normal', 'test/BGTextureNORM.jpg')
-    .load(onAssetsLoaded);
-
-function createPair(diffuseTex, normalTex) {
-    var container = new PIXI.Container();
-    var diffuseSprite = new PIXI.Sprite(diffuseTex);
-    diffuseSprite.parentGroup = PIXI.lights.diffuseGroup;
-    var normalSprite = new PIXI.Sprite(normalTex);
-    normalSprite.parentGroup = PIXI.lights.normalGroup;
-    container.addChild(diffuseSprite);
-    container.addChild(normalSprite);
-    return container;
-}
-
-function onAssetsLoaded(loader, res) {
-    var bg = createPair(res.bg_diffuse.texture, res.bg_normal.texture);
-    light.position.set(525, 160);
-
-    //add more lights if needed
-    bg.interactive = true;
-    bg.on('mousemove', function (event) {
-        light.position.copy(event.data.global);
-    });
-
-    bg.on('pointerdown', function (event) {
-        var clickLight = new PIXI.lights.PointLight(0xffffff);
-        clickLight.position.copy(event.data.global);
-        stage.addChild(clickLight);
-    });
-}
-</code></pre><h2>Building</h2><p>You normally don't need to build this module, you can just download a release from the releases page.</p>
-<p>However, if you are developing on the project or want a bleeding edge build then you
-will need to have <a target="_blank" href="http://nodejs.org/">node</a> setup on your machine.</p>
-<p>Then you can install dependencies and build:</p>
-<pre class="prettyprint source lang-js"><code>npm i && npm run build</code></pre><p>That will output the built distributables to <code>./lib</code>.</p></article>
+</ol></article>
     </section>
 
 
@@ -529,7 +527,7 @@ will need to have <a target="_blank" href="http://nodejs.org/">node</a> setup on
 
         <footer class="content-size">
             <div class="footer">
-                Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Mar 24 2018 15:14:31 GMT-0400 (EDT)
+                Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Mar 24 2018 21:40:28 GMT-0400 (EDT)
             </div>
         </footer>
     </div>
